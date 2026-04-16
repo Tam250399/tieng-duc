@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frau Nguyen — Trung tâm tiếng Đức hàng đầu</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0e0e0e;
+    --cream: #f5f0e8;
+    --gold: #c9a84c;
+    --gold-light: #e8d5a3;
+    --gold-dark: #8a6820;
+    --red: #c0392b;
+    --white: #ffffff;
+    --gray: #6b6b6b;
+    --gray-light: #f0ece4;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ——— NAV ——— */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(14,14,14,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    transition: padding 0.3s;
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 900;
+    color: var(--gold);
+    letter-spacing: -0.5px;
+  }
+  .nav-logo span { color: var(--white); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none; font-size: 0.9rem; font-weight: 500;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    background: var(--gold); color: var(--black);
+    border: none; padding: 0.65rem 1.6rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem; font-weight: 600;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    cursor: pointer; transition: background 0.2s, transform 0.15s;
+  }
+  .nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* ——— HERO ——— */
+  #hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center; padding: 8rem 4rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(201,168,76,0.08) 0%, transparent 60%),
+                linear-gradient(135deg, #0e0e0e 0%, #1a1408 100%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image: linear-gradient(rgba(201,168,76,1) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(201,168,76,1) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-content { position: relative; z-index: 2; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold); padding: 0.4rem 1rem;
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp 0.7s 0.2s forwards;
+  }
+  .hero-badge::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--gold); border-radius: 50%;
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 5vw, 5.5rem);
+    font-weight: 900; line-height: 1.05;
+    margin-bottom: 1.5rem;
+    opacity: 0; transform: translateY(30px);
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+  h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub {
+    font-size: 1.1rem; color: rgba(255,255,255,0.6);
+    line-height: 1.7; max-width: 480px;
+    margin-bottom: 2.5rem;
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+  .hero-actions {
+    display: flex; gap: 1rem; align-items: center;
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .btn-primary {
+    background: var(--gold); color: var(--black);
+    border: none; padding: 1rem 2.4rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem; font-weight: 700;
+    cursor: pointer; transition: all 0.2s;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .btn-primary:hover { background: #e0c068; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.3); }
+  .btn-outline {
+    background: transparent; color: var(--white);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 1rem 2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem; font-weight: 500;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 4rem;
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp 0.8s 1s forwards;
+  }
+  .stat-item { }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem; font-weight: 700; color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* Hero Visual */
+  .hero-visual {
+    position: relative; z-index: 2;
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0; animation: fadeIn 1s 0.5s forwards;
+  }
+  .hero-card-main {
+    background: linear-gradient(135deg, #1e1810, #2a2010);
+    border: 1px solid rgba(201,168,76,0.3);
+    padding: 2.5rem;
+    width: 360px;
+    position: relative;
+  }
+  .hero-card-main::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+  .card-lang-flag {
+    font-size: 3rem; margin-bottom: 1rem;
+  }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .card-sub { font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-bottom: 1.5rem; }
+  .card-levels {
+    display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+  }
+  .level-tag {
+    background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold); padding: 0.3rem 0.8rem;
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px;
+  }
+  .card-progress-bar {
+    height: 3px; background: rgba(255,255,255,0.1);
+    margin-bottom: 0.5rem; border-radius: 2px; overflow: hidden;
+  }
+  .card-progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--gold), #e0c068);
+    border-radius: 2px;
+    animation: expand 2s 1.5s ease forwards;
+    width: 0;
+  }
+  @keyframes expand { to { width: 75%; } }
+  .card-progress-label { font-size: 0.75rem; color: rgba(255,255,255,0.4); }
+
+  .floating-badge {
+    position: absolute;
+    background: var(--black); border: 1px solid rgba(201,168,76,0.4);
+    padding: 0.8rem 1.2rem;
+    animation: float 3s ease-in-out infinite;
+  }
+  .fb1 { top: -20px; right: -30px; animation-delay: 0s; }
+  .fb2 { bottom: -20px; left: -30px; animation-delay: 1.5s; }
+  .fb-label { font-size: 0.7rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+  .fb-value { font-size: 1.2rem; font-weight: 700; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  /* ——— SECTIONS SHARED ——— */
+  section { padding: 7rem 4rem; }
+  .section-label {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.2rem;
+  }
+  .section-label::before {
+    content: ''; display: block; width: 40px; height: 1px; background: var(--gold);
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 3.5vw, 3.5rem);
+    font-weight: 700; line-height: 1.1; margin-bottom: 1rem;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  /* ——— WHY ——— */
+  #why { background: #0a0a0a; }
+  .why-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 5rem; align-items: center;
+  }
+  .why-text .section-sub {
+    font-size: 1rem; color: rgba(255,255,255,0.55);
+    line-height: 1.8; margin-bottom: 2.5rem; max-width: 480px;
+  }
+  .why-features { display: flex; flex-direction: column; gap: 1.2rem; }
+  .feature-row {
+    display: flex; gap: 1rem; align-items: flex-start;
+    padding: 1.2rem;
+    border: 1px solid rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.02);
+    transition: border-color 0.3s, background 0.3s;
+    opacity: 0; transform: translateX(-20px);
+    transition: opacity 0.6s, transform 0.6s, border-color 0.3s, background 0.3s;
+  }
+  .feature-row.visible { opacity: 1; transform: translateX(0); }
+  .feature-row:hover { border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.04); }
+  .feature-icon {
+    width: 44px; height: 44px; flex-shrink: 0;
+    background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+  }
+  .feature-info h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.25rem; }
+  .feature-info p { font-size: 0.82rem; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+  .why-visual {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.8s, transform 0.8s;
+  }
+  .why-visual.visible { opacity: 1; transform: translateY(0); }
+  .stat-card {
+    background: #111; border: 1px solid rgba(255,255,255,0.07);
+    padding: 2rem 1.5rem;
+    position: relative; overflow: hidden;
+  }
+  .stat-card::after {
+    content: ''; position: absolute; bottom: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+  .stat-card:nth-child(2) { margin-top: 2rem; }
+  .stat-card:nth-child(4) { margin-top: -2rem; }
+  .sc-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem; font-weight: 700; color: var(--gold);
+  }
+  .sc-label { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-top: 6px; }
+
+  /* ——— COURSES ——— */
+  #courses { background: var(--black); }
+  .courses-intro { text-align: center; max-width: 600px; margin: 0 auto 4rem; }
+  .courses-intro .section-label { justify-content: center; }
+  .courses-intro .section-label::before { display: none; }
+  .courses-intro .section-sub { font-size: 1rem; color: rgba(255,255,255,0.5); line-height: 1.7; margin-top: 1rem; }
+  .courses-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px; background: rgba(201,168,76,0.15);
+  }
+  .course-card {
+    background: #0e0e0e; padding: 2.5rem 2rem;
+    position: relative; overflow: hidden;
+    cursor: pointer; transition: background 0.3s;
+    opacity: 0; transform: translateY(30px);
+    transition: background 0.3s, opacity 0.6s, transform 0.6s;
+  }
+  .course-card.visible { opacity: 1; transform: translateY(0); }
+  .course-card:hover { background: #141208; }
+  .course-card:hover .course-hover-line { width: 100%; }
+  .course-hover-line {
+    position: absolute; bottom: 0; left: 0; height: 2px;
+    background: var(--gold); width: 0; transition: width 0.4s;
+  }
+  .course-level {
+    display: inline-block;
+    background: rgba(201,168,76,0.12); color: var(--gold);
+    border: 1px solid rgba(201,168,76,0.25);
+    padding: 0.25rem 0.75rem; font-size: 0.72rem;
+    font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .course-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;
+  }
+  .course-desc { font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.6; margin-bottom: 2rem; }
+  .course-meta { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 2rem; }
+  .course-meta-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.82rem; color: rgba(255,255,255,0.6);
+  }
+  .meta-icon { font-size: 0.9rem; }
+  .course-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 700; color: var(--gold);
+  }
+  .course-price span { font-family: 'DM Sans', sans-serif; font-size: 0.8rem; color: rgba(255,255,255,0.4); font-weight: 400; }
+  .course-featured { background: #10100a; border: 1px solid rgba(201,168,76,0.3); }
+  .featured-tag {
+    position: absolute; top: 1.5rem; right: 1.5rem;
+    background: var(--gold); color: var(--black);
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; padding: 0.25rem 0.75rem;
+  }
+
+  /* ——— PROCESS ——— */
+  #process { background: #050505; }
+  .process-header { text-align: center; max-width: 600px; margin: 0 auto 5rem; }
+  .process-header .section-label { justify-content: center; }
+  .process-header .section-label::before { display: none; }
+  .process-steps {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0; position: relative;
+  }
+  .process-steps::before {
+    content: '';
+    position: absolute; top: 2rem; left: 12.5%; right: 12.5%;
+    height: 1px; background: rgba(201,168,76,0.2);
+  }
+  .process-step {
+    text-align: center; padding: 0 1.5rem;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+  .process-step.visible { opacity: 1; transform: translateY(0); }
+  .step-num {
+    width: 4rem; height: 4rem;
+    border: 1px solid rgba(201,168,76,0.4);
+    background: #0e0e0e;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 2rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-weight: 700; color: var(--gold);
+    position: relative; z-index: 2;
+    transition: background 0.3s;
+  }
+  .process-step:hover .step-num { background: rgba(201,168,76,0.1); }
+  .step-icon { font-size: 1.5rem; margin-bottom: 1rem; }
+  .step-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .step-desc { font-size: 0.82rem; color: rgba(255,255,255,0.45); line-height: 1.6; }
+
+  /* ——— TESTIMONIALS ——— */
+  #testimonials { background: var(--black); }
+  .testi-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; }
+  .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .testi-card {
+    background: #111; border: 1px solid rgba(255,255,255,0.06);
+    padding: 2rem;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.6s, transform 0.6s, border-color 0.3s;
+  }
+  .testi-card.visible { opacity: 1; transform: translateY(0); }
+  .testi-card:hover { border-color: rgba(201,168,76,0.2); }
+  .testi-stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 1.2rem; letter-spacing: 2px; }
+  .testi-text { font-size: 0.9rem; color: rgba(255,255,255,0.7); line-height: 1.7; margin-bottom: 1.5rem; font-style: italic; }
+  .testi-author { display: flex; align-items: center; gap: 0.8rem; }
+  .author-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.85rem;
+    background: rgba(201,168,76,0.15); color: var(--gold);
+    border: 1px solid rgba(201,168,76,0.3);
+  }
+  .author-name { font-size: 0.88rem; font-weight: 600; }
+  .author-meta { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+  /* ——— CTA ——— */
+  #cta {
+    background: linear-gradient(135deg, #1a1408, #0e0e0e);
+    text-align: center; padding: 8rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  #cta::before {
+    content: 'DEUTSCH';
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-family: 'Playfair Display', serif;
+    font-size: 18vw; font-weight: 900;
+    color: rgba(201,168,76,0.03); white-space: nowrap;
+    pointer-events: none;
+  }
+  .cta-content { position: relative; z-index: 2; }
+  .cta-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 4vw, 4.5rem);
+    font-weight: 700; margin-bottom: 1.5rem; line-height: 1.1;
+  }
+  .cta-title em { color: var(--gold); font-style: italic; }
+  .cta-sub { font-size: 1.05rem; color: rgba(255,255,255,0.5); margin-bottom: 3rem; max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+  .cta-form {
+    display: flex; gap: 0; max-width: 480px; margin: 0 auto 1.5rem;
+  }
+  .cta-form input {
+    flex: 1;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15);
+    border-right: none;
+    color: var(--white); padding: 0.9rem 1.2rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    outline: none; transition: border-color 0.2s;
+  }
+  .cta-form input::placeholder { color: rgba(255,255,255,0.3); }
+  .cta-form input:focus { border-color: rgba(201,168,76,0.5); }
+  .cta-form button {
+    background: var(--gold); color: var(--black);
+    border: none; padding: 0.9rem 1.8rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    cursor: pointer; transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .cta-form button:hover { background: #e0c068; }
+  .cta-note { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+
+  /* ——— FOOTER ——— */
+  footer {
+    background: #050505; padding: 3rem 4rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; font-weight: 900; color: var(--gold);
+  }
+  .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.25); }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a { font-size: 0.78rem; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--gold); }
+
+  /* ——— LAZY LOAD OBSERVER ——— */
+  .lazy-hidden { opacity: 0; transform: translateY(30px); }
+
+  /* ——— HAMBURGER (mobile) ——— */
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { display: block; width: 24px; height: 1.5px; background: var(--white); transition: all 0.3s; }
+
+  @media (max-width: 1024px) {
+    nav { padding: 1rem 2rem; }
+    section { padding: 5rem 2rem; }
+    #hero { padding: 7rem 2rem 4rem; }
+    .courses-grid { grid-template-columns: 1fr 1fr; }
+    .process-steps { grid-template-columns: 1fr 1fr; gap: 3rem; }
+    .process-steps::before { display: none; }
+  }
+  @media (max-width: 768px) {
+    #hero { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .why-grid { grid-template-columns: 1fr; }
+    .courses-grid { grid-template-columns: 1fr; }
+    .testi-grid { grid-template-columns: 1fr; }
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+    .testi-header { flex-direction: column; gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Frau<span>Nguyen</span></div>
+  <ul class="nav-links">
+    <li><a href="#why">Về chúng tôi</a></li>
+    <li><a href="#courses">Khóa học</a></li>
+    <li><a href="#process">Lộ trình</a></li>
+    <li><a href="#testimonials">Học viên</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Đăng ký ngay</button>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">Trung tâm tiếng Đức hàng đầu Việt Nam</div>
+    <h1>Chinh phục<br><em>tiếng Đức</em><br>từ con số 0</h1>
+    <p class="hero-sub">Lộ trình học chuẩn CEFR từ A1 đến C1, được thiết kế bởi chuyên gia người Đức. Cam kết đầu ra — hoàn tiền nếu không đạt mục tiêu.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('courses').scrollIntoView({behavior:'smooth'})">Xem khóa học</button>
+      <button class="btn-outline" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Học thử miễn phí</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num" id="cnt1">0</div>
+        <div class="stat-label">Học viên tốt nghiệp</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="cnt2">0</div>
+        <div class="stat-label">Năm kinh nghiệm</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="cnt3">0%</div>
+        <div class="stat-label">Tỷ lệ đậu chứng chỉ</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div style="position:relative;">
+      <div class="hero-card-main">
+        <div class="card-lang-flag">🇩🇪</div>
+        <div class="card-title">Tiếng Đức chuẩn Goethe</div>
+        <div class="card-sub">Chương trình đào tạo quốc tế</div>
+        <div class="card-levels">
+          <span class="level-tag">A1</span>
+          <span class="level-tag">A2</span>
+          <span class="level-tag">B1</span>
+          <span class="level-tag">B2</span>
+          <span class="level-tag">C1</span>
+        </div>
+        <div style="margin-bottom:0.4rem;font-size:0.78rem;color:rgba(255,255,255,0.4);">Tiến độ trung bình học viên</div>
+        <div class="card-progress-bar"><div class="card-progress-fill"></div></div>
+        <div class="card-progress-label">75% hoàn thành lộ trình B2</div>
+      </div>
+
+      <div class="floating-badge fb1">
+        <div class="fb-label">Học viên mới</div>
+        <div class="fb-value">+120 / tháng</div>
+      </div>
+      <div class="floating-badge fb2">
+        <div class="fb-label">Xếp hạng Goethe</div>
+        <div class="fb-value">★ 4.9 / 5</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section id="why">
+  <div class="why-grid">
+    <div class="why-text">
+      <div class="section-label">Tại sao chọn chúng tôi</div>
+      <h2 class="section-title">Học tiếng Đức<br>theo <em>đúng cách</em></h2>
+      <p class="section-sub">Chúng tôi không chỉ dạy từ vựng và ngữ pháp. Chúng tôi xây dựng tư duy ngôn ngữ để bạn có thể sử dụng tiếng Đức tự nhiên trong mọi tình huống thực tế.</p>
+      <div class="why-features">
+        <div class="feature-row lazy-item">
+          <div class="feature-icon">🎓</div>
+          <div class="feature-info">
+            <h4>Giảng viên được chứng nhận DaF</h4>
+            <p>100% giáo viên có bằng DaF (Tiếng Đức là ngoại ngữ) từ các trường đại học Đức và Áo</p>
+          </div>
+        </div>
+        <div class="feature-row lazy-item" style="transition-delay:0.1s">
+          <div class="feature-icon">📚</div>
+          <div class="feature-info">
+            <h4>Giáo trình chuẩn Goethe Institut</h4>
+            <p>Nội dung được cập nhật theo chuẩn CEFR mới nhất, có cam kết đầu ra rõ ràng</p>
+          </div>
+        </div>
+        <div class="feature-row lazy-item" style="transition-delay:0.2s">
+          <div class="feature-icon">🔴</div>
+          <div class="feature-info">
+            <h4>Lớp học nhỏ — tối đa 12 người</h4>
+            <p>Mỗi học viên được chú ý và sửa lỗi trực tiếp, không học chay theo nhóm lớn</p>
+          </div>
+        </div>
+        <div class="feature-row lazy-item" style="transition-delay:0.3s">
+          <div class="feature-icon">💬</div>
+          <div class="feature-info">
+            <h4>Luyện nói hàng ngày với native speaker</h4>
+            <p>Session 1-1 với người bản ngữ 2 lần/tuần giúp phát âm và phản xạ ngôn ngữ tự nhiên</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-visual lazy-item">
+      <div class="stat-card">
+        <div class="sc-num">3.200+</div>
+        <div class="sc-label">Học viên tốt nghiệp thành công</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-num">12</div>
+        <div class="sc-label">Năm hoạt động liên tục</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-num">97%</div>
+        <div class="sc-label">Tỷ lệ đậu chứng chỉ Goethe B1/B2</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-num">4.9★</div>
+        <div class="sc-label">Đánh giá trung bình từ học viên</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSES -->
+<section id="courses">
+  <div class="courses-intro">
+    <div class="section-label">Chương trình học</div>
+    <h2 class="section-title">Khóa học phù hợp<br>với mọi <em>trình độ</em></h2>
+    <p class="section-sub">Từ người chưa biết gì đến nâng cao C1 — chúng tôi có lộ trình dành riêng cho bạn</p>
+  </div>
+
+  <div class="courses-grid">
+    <div class="course-card lazy-item">
+      <div class="course-level">Sơ cấp</div>
+      <div class="course-name">Nhập môn A1 — A2</div>
+      <div class="course-desc">Xây dựng nền tảng vững chắc từ bảng chữ cái, phát âm, cấu trúc câu cơ bản đến giao tiếp hàng ngày.</div>
+      <div class="course-meta">
+        <div class="course-meta-item"><span class="meta-icon">⏰</span> 4 tháng · 3 buổi/tuần</div>
+        <div class="course-meta-item"><span class="meta-icon">👥</span> Tối đa 12 học viên</div>
+        <div class="course-meta-item"><span class="meta-icon">📍</span> Online & Offline</div>
+        <div class="course-meta-item"><span class="meta-icon">🎯</span> Thi chứng chỉ A2 Goethe</div>
+      </div>
+      <div class="course-price">2.900.000 <span>VNĐ / tháng</span></div>
+      <div class="course-hover-line"></div>
+    </div>
+
+    <div class="course-card course-featured lazy-item" style="transition-delay:0.15s">
+      <div class="featured-tag">Phổ biến nhất</div>
+      <div class="course-level">Trung cấp</div>
+      <div class="course-name">Giao tiếp B1 — B2</div>
+      <div class="course-desc">Đạt trình độ sử dụng tiếng Đức thành thạo trong môi trường làm việc, du học và định cư Đức.</div>
+      <div class="course-meta">
+        <div class="course-meta-item"><span class="meta-icon">⏰</span> 8 tháng · 3 buổi/tuần</div>
+        <div class="course-meta-item"><span class="meta-icon">👥</span> Tối đa 10 học viên</div>
+        <div class="course-meta-item"><span class="meta-icon">📍</span> Online & Offline</div>
+        <div class="course-meta-item"><span class="meta-icon">🎯</span> Thi chứng chỉ B2 Goethe</div>
+      </div>
+      <div class="course-price">3.600.000 <span>VNĐ / tháng</span></div>
+      <div class="course-hover-line"></div>
+    </div>
+
+    <div class="course-card lazy-item" style="transition-delay:0.3s">
+      <div class="course-level">Nâng cao</div>
+      <div class="course-name">Chuyên sâu C1</div>
+      <div class="course-desc">Dành cho người muốn học tại Đức, làm việc chuyên nghiệp hoặc cần thành thạo học thuật và kinh doanh.</div>
+      <div class="course-meta">
+        <div class="course-meta-item"><span class="meta-icon">⏰</span> 6 tháng · 4 buổi/tuần</div>
+        <div class="course-meta-item"><span class="meta-icon">👥</span> Tối đa 8 học viên</div>
+        <div class="course-meta-item"><span class="meta-icon">📍</span> Hybrid (ưu tiên offline)</div>
+        <div class="course-meta-item"><span class="meta-icon">🎯</span> Thi chứng chỉ C1 Goethe</div>
+      </div>
+      <div class="course-price">4.500.000 <span>VNĐ / tháng</span></div>
+      <div class="course-hover-line"></div>
+    </div>
+
+    <div class="course-card lazy-item" style="transition-delay:0.15s">
+      <div class="course-level">Đặc biệt</div>
+      <div class="course-name">Tiếng Đức cho Du học</div>
+      <div class="course-desc">Chuẩn bị toàn diện cho Studienkolleg, kỳ thi DSH và TestDaF. Bao gồm hỗ trợ hồ sơ du học.</div>
+      <div class="course-meta">
+        <div class="course-meta-item"><span class="meta-icon">⏰</span> 3 — 12 tháng linh hoạt</div>
+        <div class="course-meta-item"><span class="meta-icon">👥</span> Tối đa 8 học viên</div>
+        <div class="course-meta-item"><span class="meta-icon">📍</span> Offline ưu tiên</div>
+        <div class="course-meta-item"><span class="meta-icon">🎯</span> DSH / TestDaF</div>
+      </div>
+      <div class="course-price">4.200.000 <span>VNĐ / tháng</span></div>
+      <div class="course-hover-line"></div>
+    </div>
+
+    <div class="course-card lazy-item" style="transition-delay:0.3s">
+      <div class="course-level">Doanh nghiệp</div>
+      <div class="course-name">Tiếng Đức Thương mại</div>
+      <div class="course-desc">Ngôn ngữ chuyên ngành cho môi trường kinh doanh, đàm phán, viết báo cáo và thuyết trình bằng tiếng Đức.</div>
+      <div class="course-meta">
+        <div class="course-meta-item"><span class="meta-icon">⏰</span> 4 tháng · linh hoạt</div>
+        <div class="course-meta-item"><span class="meta-icon">👥</span> Group hoặc 1-1</div>
+        <div class="course-meta-item"><span class="meta-icon">📍</span> Tại doanh nghiệp / Online</div>
+        <div class="course-meta-item"><span class="meta-icon">🎯</span> Chứng chỉ Goethe Beruf</div>
+      </div>
+      <div class="course-price">Liên hệ <span>báo giá theo nhóm</span></div>
+      <div class="course-hover-line"></div>
+    </div>
+
+    <div class="course-card lazy-item" style="transition-delay:0.45s">
+      <div class="course-level">Cấp tốc</div>
+      <div class="course-name">Intensive 1-1</div>
+      <div class="course-desc">Học 1 kèm 1 với giảng viên cá nhân, đẩy nhanh tiến độ gấp đôi. Lịch học linh hoạt hoàn toàn theo bạn.</div>
+      <div class="course-meta">
+        <div class="course-meta-item"><span class="meta-icon">⏰</span> Linh hoạt 100%</div>
+        <div class="course-meta-item"><span class="meta-icon">👥</span> Chỉ 1 học viên</div>
+        <div class="course-meta-item"><span class="meta-icon">📍</span> Online / Offline / Tại nhà</div>
+        <div class="course-meta-item"><span class="meta-icon">🎯</span> Theo mục tiêu cá nhân</div>
+      </div>
+      <div class="course-price">350.000 <span>VNĐ / giờ</span></div>
+      <div class="course-hover-line"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="process-header">
+    <div class="section-label">Quy trình học</div>
+    <h2 class="section-title">4 bước <em>đơn giản</em><br>để bắt đầu</h2>
+  </div>
+
+  <div class="process-steps">
+    <div class="process-step lazy-item">
+      <div class="step-num">01</div>
+      <div class="step-icon">📋</div>
+      <div class="step-title">Kiểm tra đầu vào</div>
+      <div class="step-desc">Làm bài test online miễn phí để xác định đúng trình độ và chọn khóa học phù hợp nhất với bạn.</div>
+    </div>
+    <div class="process-step lazy-item" style="transition-delay:0.15s">
+      <div class="step-num">02</div>
+      <div class="step-icon">🗣️</div>
+      <div class="step-title">Tư vấn 1-1</div>
+      <div class="step-desc">Gặp gỡ tư vấn viên để thảo luận mục tiêu, lịch học và thiết kế lộ trình cá nhân hóa cho bạn.</div>
+    </div>
+    <div class="process-step lazy-item" style="transition-delay:0.3s">
+      <div class="step-num">03</div>
+      <div class="step-icon">📖</div>
+      <div class="step-title">Học thử 1 tuần</div>
+      <div class="step-desc">Tham gia 3 buổi học thử hoàn toàn miễn phí. Không hài lòng — không cần trả bất kỳ đồng nào.</div>
+    </div>
+    <div class="process-step lazy-item" style="transition-delay:0.45s">
+      <div class="step-num">04</div>
+      <div class="step-icon">🏆</div>
+      <div class="step-title">Chinh phục mục tiêu</div>
+      <div class="step-desc">Học theo lộ trình có cam kết đầu ra. Đội ngũ hỗ trợ 24/7 và theo dõi tiến độ học hàng tuần.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="testi-header">
+    <div>
+      <div class="section-label">Học viên nói gì</div>
+      <h2 class="section-title">Câu chuyện<br><em>thành công</em></h2>
+    </div>
+    <div style="font-size:0.85rem;color:rgba(255,255,255,0.4);max-width:280px;text-align:right;line-height:1.6;">
+      Hơn 3.200 học viên đã đạt chứng chỉ tiếng Đức và thực hiện được giấc mơ của mình
+    </div>
+  </div>
+
+  <div class="testi-grid">
+    <div class="testi-card lazy-item">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Sau 8 tháng học tại Frau Nguyen, tôi đã đậu B2 Goethe với điểm Sehr gut. Giờ tôi đang học tại ĐH Hamburg — điều tôi chưa bao giờ dám mơ trước đây."</div>
+      <div class="testi-author">
+        <div class="author-avatar">NL</div>
+        <div>
+          <div class="author-name">Nguyễn Linh</div>
+          <div class="author-meta">Du học sinh ĐH Hamburg · B2 Goethe 2023</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card lazy-item" style="transition-delay:0.15s">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Mình đã thử 2 trung tâm khác trước đây nhưng không tiến bộ. Frau Nguyen có phương pháp khác hẳn — lớp nhỏ, giáo viên tận tâm và nói tiếng Đức từ ngày đầu tiên."</div>
+      <div class="testi-author">
+        <div class="author-avatar">TH</div>
+        <div>
+          <div class="author-name">Trần Hương</div>
+          <div class="author-meta">Kỹ sư tại Bosch Vietnam · C1 candidate</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card lazy-item" style="transition-delay:0.3s">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Khóa tiếng Đức thương mại giúp tôi tự tin đàm phán với đối tác Đức. Doanh thu mảng xuất khẩu của công ty tăng 40% kể từ khi có thể giao tiếp trực tiếp."</div>
+      <div class="testi-author">
+        <div class="author-avatar">PD</div>
+        <div>
+          <div class="author-name">Phạm Dũng</div>
+          <div class="author-meta">Giám đốc kinh doanh · Goethe Beruf 2022</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-content">
+    <div class="section-label" style="justify-content:center;margin-bottom:1.5rem;">
+      <span style="display:block;width:40px;height:1px;background:var(--gold);"></span>
+      Bắt đầu hành trình
+    </div>
+    <h2 class="cta-title">Sẵn sàng nói<br><em>Auf Wiedersehen</em><br>với rào cản ngôn ngữ?</h2>
+    <p class="cta-sub">Đăng ký nhận lịch học thử miễn phí — không ràng buộc, không áp lực, bắt đầu ngay hôm nay.</p>
+    <div class="cta-form">
+      <input type="email" placeholder="Email của bạn..." id="emailInput">
+      <button onclick="handleSubmit()">Học thử miễn phí</button>
+    </div>
+    <div class="cta-note">🔒 Chúng tôi không bao giờ chia sẻ thông tin của bạn · Hủy bất cứ lúc nào</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Frau Nguyen</div>
+  <div class="footer-copy">© 2025 Frau Nguyen. Mọi quyền được bảo lưu.</div>
+  <div class="footer-links">
+    <a href="#">Chính sách</a>
+    <a href="#">Điều khoản</a>
+    <a href="#">Liên hệ</a>
+  </div>
+</footer>
+
+<script>
+  // ——— INTERSECTION OBSERVER (lazy loading) ———
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.lazy-item, .feature-row, .course-card, .process-step, .testi-card, .why-visual').forEach(el => {
+    observer.observe(el);
+  });
+
+  // ——— COUNTER ANIMATION ———
+  function animateCounter(el, target, suffix='', duration=1800) {
+    let start = 0;
+    const step = target / (duration / 16);
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) { el.textContent = target.toLocaleString('vi') + suffix; clearInterval(timer); }
+      else { el.textContent = Math.floor(start).toLocaleString('vi') + suffix; }
+    }, 16);
+  }
+
+  const heroObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      setTimeout(() => animateCounter(document.getElementById('cnt1'), 3200, '+'), 1000);
+      setTimeout(() => animateCounter(document.getElementById('cnt2'), 12), 1200);
+      setTimeout(() => animateCounter(document.getElementById('cnt3'), 97, '%'), 1400);
+      heroObserver.disconnect();
+    }
+  }, { threshold: 0.3 });
+  heroObserver.observe(document.getElementById('hero'));
+
+  // ——— NAV SCROLL SHRINK ———
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 60) {
+      nav.style.padding = '0.8rem 4rem';
+      nav.style.background = 'rgba(10,10,10,0.95)';
+    } else {
+      nav.style.padding = '1.2rem 4rem';
+      nav.style.background = 'rgba(14,14,14,0.85)';
+    }
+  });
+
+  // ——— CTA SUBMIT ———
+  function handleSubmit() {
+    const input = document.getElementById('emailInput');
+    if (!input.value || !input.value.includes('@')) {
+      input.style.borderColor = 'rgba(192,57,43,0.6)';
+      input.placeholder = 'Vui lòng nhập email hợp lệ';
+      setTimeout(() => {
+        input.style.borderColor = '';
+        input.placeholder = 'Email của bạn...';
+      }, 2000);
+      return;
+    }
+    const btn = document.querySelector('.cta-form button');
+    btn.textContent = '✓ Đã đăng ký!';
+    btn.style.background = '#2ecc71';
+    input.value = '';
+    setTimeout(() => {
+      btn.textContent = 'Học thử miễn phí';
+      btn.style.background = '';
+    }, 3000);
+  }
+
+  // ——— PARALLAX SUBTLE ———
+  window.addEventListener('scroll', () => {
+    const heroGrid = document.querySelector('.hero-grid');
+    if (heroGrid) heroGrid.style.transform = `translateY(${window.scrollY * 0.15}px)`;
+  }, { passive: true });
+</script>
+</body>
+</html>
