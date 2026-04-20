@@ -2,6 +2,23 @@ import type { FormEvent, RefObject } from 'react'
 import { courses, features, processSteps, testimonials } from './landing-data'
 
 type ScrollToSection = (id: string) => void
+type DelayValue = '0.1s' | '0.15s' | '0.2s' | '0.3s' | '0.45s'
+
+const DELAY_CLASS_BY_VALUE: Record<DelayValue, string> = {
+  '0.1s': 'delay-100',
+  '0.15s': 'delay-150',
+  '0.2s': 'delay-200',
+  '0.3s': 'delay-300',
+  '0.45s': 'delay-450',
+}
+
+function getDelayClass(delay?: string) {
+  if (!delay) {
+    return ''
+  }
+
+  return DELAY_CLASS_BY_VALUE[delay as DelayValue] ?? ''
+}
 
 type NavbarProps = {
   shrunk: boolean
@@ -9,6 +26,8 @@ type NavbarProps = {
 }
 
 export function Navbar({ shrunk, onScrollTo }: NavbarProps) {
+  const handleOpenCta = () => onScrollTo('cta')
+
   return (
     <nav className={shrunk ? 'is-shrunk' : undefined}>
       <div className="nav-logo">
@@ -28,7 +47,7 @@ export function Navbar({ shrunk, onScrollTo }: NavbarProps) {
           <a href="#testimonials">Học viên</a>
         </li>
       </ul>
-      <button className="nav-cta" onClick={() => onScrollTo('cta')} type="button">
+      <button className="nav-cta" onClick={handleOpenCta} type="button">
         Đăng ký ngay
       </button>
       <button className="hamburger" type="button" aria-label="Mở menu điều hướng">
@@ -57,6 +76,9 @@ export function HeroSection({
   heroGridRef,
   onScrollTo,
 }: HeroSectionProps) {
+  const handleScrollToCourses = () => onScrollTo('courses')
+  const handleScrollToCta = () => onScrollTo('cta')
+
   return (
     <section id="hero" ref={heroRef}>
       <div className="hero-bg"></div>
@@ -75,10 +97,10 @@ export function HeroSection({
           Đức. Cam kết đầu ra — hoàn tiền nếu không đạt mục tiêu.
         </p>
         <div className="hero-actions">
-          <button className="btn-primary" onClick={() => onScrollTo('courses')} type="button">
+          <button className="btn-primary" onClick={handleScrollToCourses} type="button">
             Xem khóa học
           </button>
-          <button className="btn-outline" onClick={() => onScrollTo('cta')} type="button">
+          <button className="btn-outline" onClick={handleScrollToCta} type="button">
             Học thử miễn phí
           </button>
         </div>
@@ -155,9 +177,8 @@ export function WhySection() {
           <div className="why-features">
             {features.map((feature) => (
               <div
-                className="feature-row lazy-item"
+                className={`feature-row lazy-item ${getDelayClass(feature.delay)}`}
                 key={feature.title}
-                style={{ transitionDelay: feature.delay }}
               >
                 <div className="feature-icon">{feature.icon}</div>
                 <div className="feature-info">
@@ -209,9 +230,8 @@ export function CoursesSection() {
       <div className="courses-grid">
         {courses.map((course) => (
           <article
-            className={`course-card lazy-item${course.featured ? ' course-featured' : ''}`}
+            className={`course-card lazy-item ${getDelayClass(course.delay)}${course.featured ? ' course-featured' : ''}`}
             key={course.name}
-            style={{ transitionDelay: course.delay }}
           >
             {course.featured ? <div className="featured-tag">Phổ biến nhất</div> : null}
             <div className="course-level">{course.level}</div>
@@ -249,9 +269,8 @@ export function ProcessSection() {
       <div className="process-steps">
         {processSteps.map((step) => (
           <div
-            className="process-step lazy-item"
+            className={`process-step lazy-item ${getDelayClass(step.delay)}`}
             key={step.number}
-            style={{ transitionDelay: step.delay }}
           >
             <div className="step-num">{step.number}</div>
             <div className="step-icon">{step.icon}</div>
@@ -284,9 +303,8 @@ export function TestimonialsSection() {
       <div className="testi-grid">
         {testimonials.map((item) => (
           <article
-            className="testi-card lazy-item"
+            className={`testi-card lazy-item ${getDelayClass(item.delay)}`}
             key={item.authorName}
-            style={{ transitionDelay: item.delay }}
           >
             <div className="testi-stars">★★★★★</div>
             <div className="testi-text">{item.text}</div>
@@ -307,7 +325,7 @@ export function TestimonialsSection() {
 type CtaSectionProps = {
   email: string
   submitLabel: string
-  inputError: boolean
+  inputErrorMessage: string
   onEmailChange: (value: string) => void
   onSubmit: (event: FormEvent<HTMLFormElement>) => void
 }
@@ -315,10 +333,14 @@ type CtaSectionProps = {
 export function CtaSection({
   email,
   submitLabel,
-  inputError,
+  inputErrorMessage,
   onEmailChange,
   onSubmit,
 }: CtaSectionProps) {
+  const emailFieldId = 'landing-cta-email'
+  const emailErrorId = 'landing-cta-email-error'
+  const hasInputError = Boolean(inputErrorMessage)
+
   return (
     <section id="cta">
       <div className="cta-content">
@@ -338,15 +360,25 @@ export function CtaSection({
           ngay hôm nay.
         </p>
         <form className="cta-form" onSubmit={onSubmit}>
+          <label className="sr-only" htmlFor={emailFieldId}>
+            Email của bạn
+          </label>
           <input
+            id={emailFieldId}
             type="email"
-            placeholder={inputError ? 'Vui lòng nhập email hợp lệ' : 'Email của bạn...'}
+            placeholder="Email của bạn..."
             value={email}
             onChange={(event) => onEmailChange(event.target.value)}
-            className={inputError ? 'is-error' : undefined}
+            className={hasInputError ? 'is-error' : undefined}
+            aria-invalid={hasInputError}
+            aria-describedby={hasInputError ? emailErrorId : undefined}
+            autoComplete="email"
           />
           <button type="submit">{submitLabel}</button>
         </form>
+        <p className="cta-form-error" id={emailErrorId} role="alert">
+          {inputErrorMessage}
+        </p>
         <div className="cta-note">
           🔒 Chúng tôi không bao giờ chia sẻ thông tin của bạn · Hủy bất cứ lúc nào
         </div>

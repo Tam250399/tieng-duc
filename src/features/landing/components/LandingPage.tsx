@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import {
   CoursesSection,
@@ -17,33 +17,46 @@ function animateCounter(
   suffix = '',
   duration = 1800,
 ) {
-  let start = 0
-  const step = target / (duration / 16)
-  const timer = window.setInterval(() => {
-    start += step
-    if (start >= target) {
-      element.textContent = target.toLocaleString('vi') + suffix
-      window.clearInterval(timer)
+  const startedAt = performance.now()
+
+  const tick = (timestamp: number) => {
+    const elapsed = timestamp - startedAt
+    const progress = Math.min(elapsed / duration, 1)
+    const current = Math.floor(target * progress)
+    element.textContent = current.toLocaleString('vi') + suffix
+
+    if (progress < 1) {
+      window.requestAnimationFrame(tick)
       return
     }
-    element.textContent = Math.floor(start).toLocaleString('vi') + suffix
-  }, 16)
+
+    element.textContent = target.toLocaleString('vi') + suffix
+  }
+
+  window.requestAnimationFrame(tick)
 }
 
 export function LandingPage() {
   const [isShrunk, setIsShrunk] = useState(false)
   const [email, setEmail] = useState('')
   const [submitLabel, setSubmitLabel] = useState('Học thử miễn phí')
-  const [inputError, setInputError] = useState(false)
+  const [inputErrorMessage, setInputErrorMessage] = useState('')
   const heroRef = useRef<HTMLElement | null>(null)
   const heroGridRef = useRef<HTMLDivElement | null>(null)
   const cnt1Ref = useRef<HTMLDivElement | null>(null)
   const cnt2Ref = useRef<HTMLDivElement | null>(null)
   const cnt3Ref = useRef<HTMLDivElement | null>(null)
 
-  const scrollToSection = (id: string) => {
+  const scrollToSection = useCallback((id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-  }
+  }, [])
+
+  const handleEmailChange = useCallback((value: string) => {
+    setEmail(value)
+    if (inputErrorMessage) {
+      setInputErrorMessage('')
+    }
+  }, [inputErrorMessage])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -111,19 +124,21 @@ export function LandingPage() {
     return () => heroObserver.disconnect()
   }, [])
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    if (!email.includes('@')) {
-      setInputError(true)
-      window.setTimeout(() => setInputError(false), 2000)
+    const trimmedEmail = email.trim()
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)
+    if (!isValidEmail) {
+      setInputErrorMessage('Vui lòng nhập email hợp lệ.')
       return
     }
 
     setSubmitLabel('✓ Đã đăng ký!')
+    setInputErrorMessage('')
     setEmail('')
     window.setTimeout(() => setSubmitLabel('Học thử miễn phí'), 3000)
-  }
+  }, [email])
 
   return (
     <>
@@ -143,8 +158,8 @@ export function LandingPage() {
       <CtaSection
         email={email}
         submitLabel={submitLabel}
-        inputError={inputError}
-        onEmailChange={setEmail}
+        inputErrorMessage={inputErrorMessage}
+        onEmailChange={handleEmailChange}
         onSubmit={handleSubmit}
       />
       <FooterSection />

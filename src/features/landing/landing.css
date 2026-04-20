@@ -22,6 +22,13 @@ body {
   overflow-x: hidden;
 }
 
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
 nav {
   position: fixed;
   top: 0;
@@ -76,6 +83,10 @@ nav.is-shrunk {
   color: var(--gold);
 }
 
+.nav-links a:focus-visible {
+  color: var(--gold);
+}
+
 .nav-cta {
   background: var(--gold);
   color: var(--black);
@@ -86,6 +97,12 @@ nav.is-shrunk {
   letter-spacing: 0.5px;
   text-transform: uppercase;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px rgba(201, 168, 76, 0.35);
 }
 
 .hamburger {
@@ -186,7 +203,7 @@ h1 em {
 
 .hero-sub {
   font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.78);
   line-height: 1.7;
   max-width: 480px;
   margin-bottom: 2.5rem;
@@ -208,6 +225,12 @@ h1 em {
   padding: 1rem 2rem;
   font-size: 0.95rem;
   cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .btn-primary {
@@ -216,10 +239,21 @@ h1 em {
   border: none;
 }
 
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(201, 168, 76, 0.3);
+}
+
 .btn-outline {
   background: transparent;
   color: var(--white);
   border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-outline:hover {
+  transform: translateY(-2px);
+  border-color: rgba(201, 168, 76, 0.6);
+  color: var(--gold-light);
 }
 
 .hero-stats {
@@ -364,7 +398,7 @@ h1 em {
 
 .section-sub {
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.75);
   line-height: 1.8;
   margin-bottom: 2.5rem;
 }
@@ -394,12 +428,39 @@ h1 em {
   transform: translateY(0);
 }
 
+.delay-100 {
+  transition-delay: 0.1s;
+}
+
+.delay-150 {
+  transition-delay: 0.15s;
+}
+
+.delay-200 {
+  transition-delay: 0.2s;
+}
+
+.delay-300 {
+  transition-delay: 0.3s;
+}
+
+.delay-450 {
+  transition-delay: 0.45s;
+}
+
 .feature-row {
   display: flex;
   gap: 1rem;
   padding: 1.2rem;
   border: 1px solid rgba(255, 255, 255, 0.06);
   background: rgba(255, 255, 255, 0.02);
+  transition: border-color 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+}
+
+.feature-row:hover {
+  transform: translateY(-2px);
+  border-color: rgba(201, 168, 76, 0.32);
+  background: rgba(201, 168, 76, 0.06);
 }
 
 .feature-icon {
@@ -460,6 +521,12 @@ h1 em {
   background: #0e0e0e;
   padding: 2.5rem 2rem;
   position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.32);
 }
 
 .course-level {
@@ -576,6 +643,12 @@ h1 em {
   background: #111;
   border: 1px solid rgba(255, 255, 255, 0.06);
   padding: 2rem;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.testi-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(201, 168, 76, 0.25);
 }
 
 .testi-stars {
@@ -664,12 +737,42 @@ h1 em {
   border-color: rgba(192, 57, 43, 0.6);
 }
 
+.cta-form input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
 .cta-form button {
   background: var(--gold);
   color: var(--black);
   border: none;
   padding: 0.9rem 1.8rem;
   font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cta-form button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(201, 168, 76, 0.25);
+}
+
+.cta-form-error {
+  min-height: 1.3rem;
+  margin: 0 0 1rem;
+  color: #ff9b90;
+  font-size: 0.85rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 footer {
@@ -789,9 +892,39 @@ footer {
     text-align: left;
   }
 
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-stats {
+    gap: 1.4rem;
+    flex-wrap: wrap;
+    margin-top: 2.5rem;
+  }
+
+  .cta-form {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .cta-form input {
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
   footer {
     flex-direction: column;
     gap: 1rem;
     text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
   }
 }
